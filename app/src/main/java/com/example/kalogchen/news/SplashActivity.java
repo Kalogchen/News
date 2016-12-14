@@ -1,6 +1,7 @@
 package com.example.kalogchen.news;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
@@ -52,6 +53,30 @@ public class SplashActivity extends Activity {
         animSet.addAnimation(rotateAnim);
         animSet.addAnimation(scaleAnim);
         animSet.addAnimation(alphaAnim);
+
+        //给动画设置监听，动画播放完后就进入新手引导页
+        animSet.setAnimationListener(new Animation.AnimationListener() {
+            //动画开始执行
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            //动画重复执行
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            //动画执行结束
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+                //进入新手引导页
+                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+                //关闭闪屏页
+                finish();
+            }
+        });
 
         //给控件设置动画
         rlSplash.startAnimation(animSet);

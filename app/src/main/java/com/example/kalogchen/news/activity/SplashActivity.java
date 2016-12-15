@@ -1,4 +1,4 @@
-package com.example.kalogchen.news;
+package com.example.kalogchen.news.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,6 +9,9 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.view.animation.ScaleAnimation;
 import android.widget.RelativeLayout;
+
+import com.example.kalogchen.news.R;
+import com.example.kalogchen.news.utils.SharedPreferencesUtils;
 
 public class SplashActivity extends Activity {
 
@@ -59,22 +62,17 @@ public class SplashActivity extends Activity {
             //动画开始执行
             @Override
             public void onAnimationStart(Animation animation) {
-
-            }
-
-            //动画重复执行
-            @Override
-            public void onAnimationEnd(Animation animation) {
-
             }
 
             //动画执行结束
             @Override
+            public void onAnimationEnd(Animation animation) {
+                intoGuideOrHome();
+            }
+
+            //动画重复执行
+            @Override
             public void onAnimationRepeat(Animation animation) {
-                //进入新手引导页
-                startActivity(new Intent(SplashActivity.this, GuideActivity.class));
-                //关闭闪屏页
-                finish();
             }
         });
 
@@ -82,4 +80,22 @@ public class SplashActivity extends Activity {
         rlSplash.startAnimation(animSet);
 
     }
+
+    /**
+     * 判断闪屏页过后是进入引导页还是主页面
+     */
+    private void intoGuideOrHome() {
+
+        boolean intoGuide = SharedPreferencesUtils.getBoolean(this, "into_guide_page", false);
+
+        if (intoGuide) {
+            //已经进入过引导页后，再进来直接进入主页面
+            startActivity(new Intent(SplashActivity.this, HomeActivity.class));
+        }else {
+            //没有进入过引导页，直接进入引导页
+            startActivity(new Intent(SplashActivity.this, GuideActivity.class));
+        }
+        finish();
+    }
+
 }
